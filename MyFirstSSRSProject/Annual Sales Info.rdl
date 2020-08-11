@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report MustUnderstand="df" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:df="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition/defaultfontfamily">
+  <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="BikeStoresDB">
+      <DataSourceReference>BikeStoresDB</DataSourceReference>
+      <rd:SecurityType>None</rd:SecurityType>
+      <rd:DataSourceID>0996975c-a243-4c1a-b724-77af75d8f327</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="CustomerData">
+      <Query>
+        <DataSourceName>BikeStoresDB</DataSourceName>
+        <CommandText>select 
+sales.customers.first_name AS customer_name,
+sales.customers.city,
+SUM(sales.order_items.quantity) AS TotalQty,
+SUM(sales.order_items.discount) AS TotalDiscount,
+SUM(sales.order_items.list_price) AS TotalPrice 
+
+from sales.customers
+Inner Join sales.orders ON sales.orders.customer_id = sales.customers.customer_id
+Inner Join sales.order_items ON sales.order_items.order_id = sales.orders.order_id
+
+Group By sales.customers.first_name,sales.customers.city </CommandText>
+      </Query>
+    </DataSet>
+  </DataSets>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <LeftMargin>1in</LeftMargin>
+        <RightMargin>1in</RightMargin>
+        <TopMargin>1in</TopMargin>
+        <BottomMargin>1in</BottomMargin>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>4</NumberOfColumns>
+      <NumberOfRows>2</NumberOfRows>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>041ed91b-ba9f-4e51-929c-69bcf093da18</rd:ReportID>
+</Report>
